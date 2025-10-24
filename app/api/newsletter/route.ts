@@ -6,7 +6,7 @@ import crypto from 'crypto';
 export async function POST(req: NextRequest) {
   try {
     // Rate limiting
-    const ip = req.ip ?? req.headers.get('x-forwarded-for') ?? 'anonymous';
+    const ip = req.headers.get('x-forwarded-for') ?? req.headers.get('x-real-ip') ?? 'anonymous';
     const { success, remaining } = await rateLimiters.newsletter.limit(ip);
 
     if (!success) {

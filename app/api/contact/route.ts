@@ -5,7 +5,7 @@ import { rateLimiters } from '@/lib/upstash/redis';
 export async function POST(req: NextRequest) {
   try {
     // Rate limiting
-    const ip = req.ip ?? req.headers.get('x-forwarded-for') ?? 'anonymous';
+    const ip = req.headers.get('x-forwarded-for') ?? req.headers.get('x-real-ip') ?? 'anonymous';
     const { success, limit, remaining, reset } = await rateLimiters.contact.limit(ip);
 
     if (!success) {

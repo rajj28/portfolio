@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Get visitor information
-    const ip = req.ip ?? req.headers.get('x-forwarded-for') ?? 'anonymous';
+    const ip = req.headers.get('x-forwarded-for') ?? req.headers.get('x-real-ip') ?? 'anonymous';
     const userAgent = req.headers.get('user-agent') || '';
     const referrer = req.headers.get('referer') || null;
 
