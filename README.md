@@ -127,3 +127,4 @@ Give a ⭐️ if you like this project!
 ---
 
 Made with ❤️ and Next.js
+# Fixed Next.js 15 compatibility
