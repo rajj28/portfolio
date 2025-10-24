@@ -22,8 +22,8 @@ export async function GET(req: NextRequest) {
     }
 
     // Build query
-    let query = supabase
-      .from('projects')
+    let query = (supabase
+      .from('projects') as any)
       .select('*')
       .eq('status', 'published')
       .order('display_order', { ascending: true });

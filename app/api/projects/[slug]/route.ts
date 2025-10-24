@@ -18,8 +18,8 @@ export async function GET(
     }
 
     // Fetch from database
-    const { data, error } = await supabase
-      .from('projects')
+    const { data, error } = await (supabase
+      .from('projects') as any)
       .select('*')
       .eq('slug', slug)
       .eq('status', 'published')

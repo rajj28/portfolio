@@ -46,8 +46,8 @@ export async function POST(req: NextRequest) {
     const referrer = req.headers.get('referer') || null;
 
     // Insert into database
-    const { data, error } = await supabaseAdmin
-      .from('contact_messages')
+    const { data, error } = await (supabaseAdmin
+      .from('contact_messages') as any)
       .insert({
         name,
         email,

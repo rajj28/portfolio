@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
     const deviceType = isMobile ? 'mobile' : isTablet ? 'tablet' : 'desktop';
 
     // Insert page view
-    const { error } = await supabaseAdmin.from('page_views').insert({
+    const { error } = await (supabaseAdmin.from('page_views') as any).insert({
       page_path: path,
       page_title: title || null,
       visitor_id: visitorId,

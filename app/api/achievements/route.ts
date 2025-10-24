@@ -19,20 +19,20 @@ export async function GET() {
 
     // Fetch all achievements data in parallel
     const [achievementsRes, awardsRes, statsRes] = await Promise.all([
-      supabase
-        .from('achievements')
+      (supabase
+        .from('achievements') as any)
         .select('*')
         .order('display_order', { ascending: true })
         .order('date', { ascending: false }),
       
-      supabase
-        .from('awards')
+      (supabase
+        .from('awards') as any)
         .select('*')
         .order('display_order', { ascending: true })
         .order('year', { ascending: false }),
       
-      supabase
-        .from('achievement_stats')
+      (supabase
+        .from('achievement_stats') as any)
         .select('*')
         .order('display_order', { ascending: true }),
     ]);

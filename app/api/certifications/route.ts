@@ -11,8 +11,8 @@ export async function GET() {
     }
 
     // Fetch certifications from database
-    const { data, error } = await supabase
-      .from('certifications')
+    const { data, error } = await (supabase
+      .from('certifications') as any)
       .select('*')
       .order('issued_date', { ascending: false });
 

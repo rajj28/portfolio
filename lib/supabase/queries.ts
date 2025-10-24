@@ -17,8 +17,8 @@ export async function getProjects(options?: {
   if (cached) return cached;
 
   // Build query
-  let query = supabase
-    .from('projects')
+  let query = (supabase
+    .from('projects') as any)
     .select('*')
     .eq('status', 'published')
     .order('display_order', { ascending: true });
@@ -58,8 +58,8 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
   const cached = await cache.get<Project>(cacheKey);
   if (cached) return cached;
 
-  const { data, error } = await supabase
-    .from('projects')
+  const { data, error } = await (supabase
+    .from('projects') as any)
     .select('*')
     .eq('slug', slug)
     .eq('status', 'published')
@@ -89,8 +89,8 @@ export async function getCertifications(options?: {
   const cached = await cache.get<Certification[]>(cacheKey);
   if (cached) return cached;
 
-  let query = supabase
-    .from('certifications')
+  let query = (supabase
+    .from('certifications') as any)
     .select('*')
     .order('issued_date', { ascending: false });
 
@@ -127,8 +127,8 @@ export async function getSkills(): Promise<{
   const cached = await cache.get<{ [category: string]: Skill[] }>(cacheKey);
   if (cached) return cached;
 
-  const { data, error } = await supabase
-    .from('skills')
+  const { data, error } = await (supabase
+    .from('skills') as any)
     .select('*')
     .order('category')
     .order('display_order');
@@ -139,7 +139,7 @@ export async function getSkills(): Promise<{
   }
 
   // Group by category
-  const grouped = (data || []).reduce((acc, skill) => {
+  const grouped = (data || []).reduce((acc: { [category: string]: Skill[] }, skill: any) => {
     const category = skill.category;
     if (!acc[category]) {
       acc[category] = [];
@@ -168,8 +168,8 @@ export async function getTestimonials(options?: {
   const cached = await cache.get<Testimonial[]>(cacheKey);
   if (cached) return cached;
 
-  let query = supabase
-    .from('testimonials')
+  let query = (supabase
+    .from('testimonials') as any)
     .select('*')
     .eq('is_approved', true)
     .order('display_order');

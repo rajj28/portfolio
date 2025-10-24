@@ -37,8 +37,8 @@ export async function POST(req: NextRequest) {
     }
 
     // Check if already subscribed
-    const { data: existing } = await supabaseAdmin
-      .from('newsletter_subscribers')
+    const { data: existing } = await (supabaseAdmin
+      .from('newsletter_subscribers') as any)
       .select('id, status')
       .eq('email', email)
       .single();
@@ -51,8 +51,8 @@ export async function POST(req: NextRequest) {
         );
       } else if (existing.status === 'unsubscribed') {
         // Reactivate subscription
-        const { error } = await supabaseAdmin
-          .from('newsletter_subscribers')
+        const { error } = await (supabaseAdmin
+          .from('newsletter_subscribers') as any)
           .update({
             status: 'active',
             subscribed_at: new Date().toISOString(),
@@ -78,8 +78,8 @@ export async function POST(req: NextRequest) {
     const verificationToken = crypto.randomBytes(32).toString('hex');
 
     // Insert new subscriber
-    const { error } = await supabaseAdmin
-      .from('newsletter_subscribers')
+    const { error } = await (supabaseAdmin
+      .from('newsletter_subscribers') as any)
       .insert({
         email,
         name: name || null,
