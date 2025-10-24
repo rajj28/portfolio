@@ -4,10 +4,10 @@ import { cache, cacheKeys } from '@/lib/upstash/redis';
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const { slug } = params;
+    const { slug } = await params;
 
     // Try cache first
     const cacheKey = cacheKeys.project(slug);
