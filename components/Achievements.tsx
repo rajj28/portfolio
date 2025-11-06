@@ -6,6 +6,7 @@ import { fadeInUp, staggerContainer, staggerItem } from "@/lib/animations";
 import Image from "next/image";
 import TextFillOnScroll from "./TextFillOnScroll";
 import { useState, useEffect } from "react";
+import AwardsVideoSlideshow from "./AwardsVideoSlideshow";
 
 // Database types (from API)
 interface AchievementFromDB {
@@ -100,6 +101,7 @@ export default function Achievements() {
       </section>
     );
   }
+
   return (
     <section id="achievements" className="relative py-24 overflow-hidden">
       {/* Background Elements */}
@@ -137,7 +139,7 @@ export default function Achievements() {
           whileInView="visible"
           viewport={{ once: true }}
           variants={staggerContainer}
-          className="text-center mb-16"
+          className="text-center mb-20"
         >
           <motion.div
             variants={fadeInUp}
@@ -164,21 +166,29 @@ export default function Achievements() {
           </motion.p>
         </motion.div>
 
-        {/* Recognition and Awards Section */}
+        {/* Achievement Highlights Section with Video Slideshow */}
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
           variants={staggerContainer}
-          className="mb-20"
+          className="mb-24"
         >
           {/* Section Title */}
           <motion.h3
             variants={fadeInUp}
-            className="text-3xl md:text-4xl font-bold text-heading mb-8 text-center"
+            className="text-3xl md:text-4xl font-bold text-heading mb-12 text-center"
           >
-            Recognition & Awards
+            Achievement <span className="text-accent">Highlights</span>
           </motion.h3>
+
+          {/* Video Slideshow - Prominently Displayed */}
+          <motion.div
+            variants={fadeInUp}
+            className="mb-16"
+          >
+            <AwardsVideoSlideshow />
+          </motion.div>
 
           {/* Stats Grid */}
           <motion.div
@@ -216,7 +226,7 @@ export default function Achievements() {
               <motion.div
                 key={award.id}
                 variants={staggerItem}
-                whileHover={{ x: 10 }}
+                whileHover={{ x: 10, scale: 1.02 }}
                 className="glassmorphism rounded-xl p-6 hover:shadow-xl transition-all group"
               >
                 <div className="flex items-start gap-4">
@@ -255,9 +265,9 @@ export default function Achievements() {
         >
           <motion.h3
             variants={fadeInUp}
-            className="text-3xl md:text-4xl font-bold text-heading mb-8 text-center"
+            className="text-3xl md:text-4xl font-bold text-heading mb-12 text-center"
           >
-            Achievement Gallery
+            Achievement <span className="text-accent">Gallery</span>
           </motion.h3>
         </motion.div>
 
@@ -340,4 +350,3 @@ export default function Achievements() {
     </section>
   );
 }
-

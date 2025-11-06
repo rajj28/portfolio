@@ -491,4 +491,3 @@ function BestWorkCard({ work, index }: { work: BestWorkItem; index: number }) {
     </motion.div>
   );
 }
-

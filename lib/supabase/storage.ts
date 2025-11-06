@@ -5,6 +5,7 @@ export const STORAGE_BUCKETS = {
   PROJECTS: 'projects',
   CERTIFICATIONS: 'certifications',
   ACHIEVEMENTS: 'achievements',
+  ACHIEVEMENTS_VIDEOS: 'achievementsvedios',
   AVATARS: 'avatars',
   THUMBNAILS: 'thumbnails',
 } as const;
