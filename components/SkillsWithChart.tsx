@@ -5,7 +5,15 @@ import { motion } from "framer-motion";
 import { Code2, Database, Palette, Wrench } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Tooltip } from 'recharts';
+import {
+  Radar,
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  ResponsiveContainer,
+  Tooltip,
+} from "recharts";
 import TextFillOnScroll from "./TextFillOnScroll";
 import InteractiveGrid from "./InteractiveGrid";
 
@@ -80,9 +88,8 @@ export default function SkillsWithChart() {
   const sectionRef = useRef<HTMLElement>(null);
   const [hoveredCategory, setHoveredCategory] = React.useState<string | null>(null);
 
-  // Prepare data for radar chart
-  const radarData = skillCategories.flatMap(category =>
-    category.skills.slice(0, 3).map(skill => ({
+  const radarData = skillCategories.flatMap((category) =>
+    category.skills.slice(0, 3).map((skill) => ({
       skill: skill.name,
       level: skill.level,
       fullMark: 100,
@@ -95,7 +102,6 @@ export default function SkillsWithChart() {
     if (typeof window === "undefined") return;
 
     const ctx = gsap.context(() => {
-      // Skill cards fade in and slide up
       gsap.utils.toArray<HTMLElement>(".skill-card-minimal").forEach((card, index) => {
         gsap.fromTo(
           card,
@@ -120,44 +126,23 @@ export default function SkillsWithChart() {
   }, []);
 
   return (
-    <section
-      id="skills"
-      ref={sectionRef}
-      className="relative py-32 overflow-hidden"
-    >
+    <section id="skills" ref={sectionRef} className="relative py-32 overflow-hidden">
       {/* Interactive Grid Background */}
       <div className="absolute inset-0 pointer-events-none">
         <InteractiveGrid />
       </div>
 
-      {/* Animated Background Effects - Subtle */}
+      {/* Subtle animated gradients */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Gradient mesh - Black (subtle) */}
         <motion.div
           className="absolute top-0 -left-1/4 w-1/3 h-1/3 bg-secondary/8 rounded-full blur-3xl"
-          animate={{
-            x: [0, 80, 0],
-            y: [0, 40, 0],
-          }}
-          transition={{
-            duration: 25,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
+          animate={{ x: [0, 80, 0], y: [0, 40, 0] }}
+          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
         />
-        
-        {/* Gradient mesh - Blue Accent (very subtle) */}
         <motion.div
           className="absolute bottom-0 -right-1/4 w-1/3 h-1/3 bg-accent/5 rounded-full blur-3xl"
-          animate={{
-            x: [0, -80, 0],
-            y: [0, -40, 0],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
+          animate={{ x: [0, -80, 0], y: [0, -40, 0] }}
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
         />
       </div>
 
@@ -180,7 +165,7 @@ export default function SkillsWithChart() {
               Skills & Expertise
             </span>
           </motion.div>
-          
+
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
             <span className="text-heading">What I </span>
             <TextFillOnScroll fillColor="#0EA5E9" duration={1.8}>
@@ -188,227 +173,214 @@ export default function SkillsWithChart() {
             </TextFillOnScroll>
             <span className="text-heading"> to the Table</span>
           </h2>
-          
+
           <p className="text-body text-lg max-w-2xl mx-auto leading-relaxed">
             A comprehensive overview of my technical skills and expertise
           </p>
         </motion.div>
 
-        {/* Radar Chart Section */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          className="mb-20"
-        >
-          <div className="bg-white rounded-3xl p-8 shadow-lg border border-border max-w-4xl mx-auto relative overflow-hidden">
-             {/* Corner Accents */}
-             <div className="absolute top-0 left-0 w-16 h-16 border-t-2 border-l-2 border-accent rounded-tl-3xl" />
-             <div className="absolute top-0 right-0 w-16 h-16 border-t-2 border-r-2 border-accent rounded-tr-3xl" />
-             <div className="absolute bottom-0 left-0 w-16 h-16 border-b-2 border-l-2 border-accent rounded-bl-3xl" />
-             <div className="absolute bottom-0 right-0 w-16 h-16 border-b-2 border-r-2 border-accent rounded-br-3xl" />
-             
-             <div className="relative z-10">
-               <h3 className="text-2xl font-bold text-center mb-8 text-heading">
-                 Skills Overview
-               </h3>
-             <div className="w-full h-[400px] md:h-[500px] min-w-[300px] min-h-[400px]">
-               <ResponsiveContainer width="100%" height="100%">
-                <RadarChart data={radarData}>
-                  <PolarGrid stroke="#E4E4E7" />
-                  <PolarAngleAxis 
-                    dataKey="skill" 
-                    tick={{ fill: '#3F3F46', fontSize: 12 }}
-                  />
-                  <PolarRadiusAxis 
-                    angle={90} 
-                    domain={[0, 100]}
-                    tick={{ fill: '#71717A', fontSize: 10 }}
-                  />
-                  <Tooltip
-                    content={({ active, payload }) => {
-                      if (active && payload && payload.length) {
-                        const data = payload[0].payload;
-                        return (
-                          <div className="bg-white px-4 py-3 rounded-lg shadow-xl border border-accent/20">
-                            <p className="font-bold text-heading mb-1">{data.skill}</p>
-                            <p className="text-sm text-textLight mb-1">{data.category}</p>
-                            <p 
-                              className="text-2xl font-bold"
-                              style={{ color: data.color }}
-                            >
-                              {data.level}%
-                            </p>
-                          </div>
-                        );
-                      }
-                      return null;
-                    }}
-                  />
-                  <Radar
-                    name="Skill Level"
-                    dataKey="level"
-                    stroke="#0EA5E9"
-                    fill="#0EA5E9"
-                    fillOpacity={0.3}
-                    strokeWidth={2}
-                  />
-                </RadarChart>
-              </ResponsiveContainer>
+        {/* === SIDE-BY-SIDE LAYOUT === */}
+        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-12 lg:gap-16 mb-20">
+          {/* LEFT: Radar Chart Section */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="flex-1 bg-white rounded-3xl p-8 shadow-lg border border-border relative overflow-hidden transform lg:scale-90"
+          >
+            {/* Decorative Corners */}
+            <div className="absolute top-0 left-0 w-16 h-16 border-t-2 border-l-2 border-accent rounded-tl-3xl" />
+            <div className="absolute top-0 right-0 w-16 h-16 border-t-2 border-r-2 border-accent rounded-tr-3xl" />
+            <div className="absolute bottom-0 left-0 w-16 h-16 border-b-2 border-l-2 border-accent rounded-bl-3xl" />
+            <div className="absolute bottom-0 right-0 w-16 h-16 border-b-2 border-r-2 border-accent rounded-br-3xl" />
+
+            <div className="relative z-10">
+              <h3 className="text-2xl font-bold text-center mb-8 text-heading">
+                Skills Overview
+              </h3>
+              <div className="w-full h-[350px] md:h-[450px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <RadarChart data={radarData}>
+                    <PolarGrid stroke="#E4E4E7" />
+                    <PolarAngleAxis dataKey="skill" tick={{ fill: "#3F3F46", fontSize: 12 }} />
+                    <PolarRadiusAxis angle={90} domain={[0, 100]} tick={{ fill: "#71717A", fontSize: 10 }} />
+                    <Tooltip
+                      content={({ active, payload }) => {
+                        if (active && payload && payload.length) {
+                          const data = payload[0].payload;
+                          return (
+                            <div className="bg-white px-4 py-3 rounded-lg shadow-xl border border-accent/20">
+                              <p className="font-bold text-heading mb-1">{data.skill}</p>
+                              <p className="text-sm text-textLight mb-1">{data.category}</p>
+                              <p className="text-2xl font-bold" style={{ color: data.color }}>
+                                {data.level}%
+                              </p>
+                            </div>
+                          );
+                        }
+                        return null;
+                      }}
+                    />
+                    <Radar
+                      name="Skill Level"
+                      dataKey="level"
+                      stroke="#0EA5E9"
+                      fill="#0EA5E9"
+                      fillOpacity={0.3}
+                      strokeWidth={2}
+                    />
+                  </RadarChart>
+                </ResponsiveContainer>
+              </div>
             </div>
-             </div>
-          </div>
-        </motion.div>
+          </motion.div>
 
-        {/* Skill Cards Grid - Expandable */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
-          <h3 className="text-2xl font-bold text-heading mb-2">
-            Detailed Skills Breakdown
-          </h3>
-          <p className="text-textLight text-sm">
-            Hover over any category to view individual skills and proficiency levels
-          </p>
-        </motion.div>
+          {/* RIGHT: Detailed Skills Breakdown */}
+          <div className="flex-1">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-8"
+            >
+              <h3 className="text-2xl font-bold text-heading mb-2">
+                Detailed Skills Breakdown
+              </h3>
+              <p className="text-textLight text-sm">
+                Hover over any category to view individual skills and proficiency levels
+              </p>
+            </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-20">
-          {skillCategories.map((category, index) => {
-            const isExpanded = hoveredCategory === category.title;
-            
-            return (
-              <motion.div
-                key={category.title}
-                className="skill-card-minimal"
-                initial={{ opacity: 0, y: 60 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1], delay: index * 0.1 }}
-                onMouseEnter={() => setHoveredCategory(category.title)}
-                onMouseLeave={() => setHoveredCategory(null)}
-              >
-                <motion.div
-                  className={`relative bg-white rounded-2xl border-2 transition-all duration-300 shadow-sm overflow-hidden ${
-                    isExpanded 
-                      ? 'border-accent shadow-xl' 
-                      : 'border-border hover:border-accent/50 hover:shadow-lg'
-                  }`}
-                  layout
-                  transition={{ duration: 0.4, ease: "easeInOut" }}
-                >
-                  {/* Header - Always Visible */}
-                  <div className="p-6 pb-4 select-none">
-                    <div className="flex items-center justify-between mb-4">
-                      {/* Icon */}
-                      <motion.div
-                        className="w-14 h-14 rounded-xl flex items-center justify-center transition-transform duration-300"
-                        style={{ background: `${category.color}15` }}
-                        animate={{ 
-                          scale: isExpanded ? 1.1 : 1,
-                          rotate: isExpanded ? 5 : 0 
-                        }}
-                      >
-                        <div style={{ color: category.color }}>{category.icon}</div>
-                      </motion.div>
-
-                      {/* Hover indicator - small badge */}
-                      <motion.div
-                        className="text-xs text-textLight font-medium"
-                        animate={{ 
-                          opacity: isExpanded ? 0 : 1,
-                          scale: isExpanded ? 0.8 : 1 
-                        }}
-                      >
-                        Hover me
-                      </motion.div>
-                    </div>
-
-                    {/* Title */}
-                    <h3
-                      className="text-xl font-bold mb-2"
-                      style={{ color: category.color }}
-                    >
-                      {category.title}
-                    </h3>
-
-                    {/* Skills Count */}
-                    <p className="text-sm text-textLight">
-                      {category.skills.length} skills
-                    </p>
-                  </div>
-
-                  {/* Expandable Skills List */}
+            <div className="grid sm:grid-cols-2 gap-6 lg:gap-8">
+              {skillCategories.map((category, index) => {
+                const isExpanded = hoveredCategory === category.title;
+                return (
                   <motion.div
-                    initial={false}
-                    animate={{
-                      height: isExpanded ? "auto" : 0,
-                      opacity: isExpanded ? 1 : 0,
+                    key={category.title}
+                    className="skill-card-minimal"
+                    initial={{ opacity: 0, y: 60 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{
+                      duration: 0.8,
+                      ease: [0.25, 0.1, 0.25, 1],
+                      delay: index * 0.1,
                     }}
-                    transition={{ duration: 0.4, ease: "easeInOut" }}
-                    className="overflow-hidden"
+                    onMouseEnter={() => setHoveredCategory(category.title)}
+                    onMouseLeave={() => setHoveredCategory(null)}
                   >
-                    <div className="px-6 pb-6 pt-2 space-y-3 border-t border-border/50">
-                      {category.skills.map((skill, skillIndex) => (
-                        <motion.div
-                          key={skill.name}
-                          initial={false}
-                          animate={{
-                            opacity: isExpanded ? 1 : 0,
-                            x: isExpanded ? 0 : -20,
-                          }}
-                          transition={{
-                            duration: 0.3,
-                            delay: isExpanded ? skillIndex * 0.05 : 0,
-                          }}
-                          className="space-y-2"
+                    <motion.div
+                      className={`relative bg-white rounded-2xl border-2 transition-all duration-300 shadow-sm overflow-hidden ${
+                        isExpanded
+                          ? "border-accent shadow-xl"
+                          : "border-border hover:border-accent/50 hover:shadow-lg"
+                      }`}
+                      layout
+                      transition={{ duration: 0.4, ease: "easeInOut" }}
+                    >
+                      <div className="p-6 pb-4 select-none">
+                        <div className="flex items-center justify-between mb-4">
+                          <motion.div
+                            className="w-14 h-14 rounded-xl flex items-center justify-center transition-transform duration-300"
+                            style={{ background: `${category.color}15` }}
+                            animate={{
+                              scale: isExpanded ? 1.1 : 1,
+                              rotate: isExpanded ? 5 : 0,
+                            }}
+                          >
+                            <div style={{ color: category.color }}>{category.icon}</div>
+                          </motion.div>
+
+                          <motion.div
+                            className="text-xs text-textLight font-medium"
+                            animate={{
+                              opacity: isExpanded ? 0 : 1,
+                              scale: isExpanded ? 0.8 : 1,
+                            }}
+                          >
+                            Hover me
+                          </motion.div>
+                        </div>
+
+                        <h3
+                          className="text-xl font-bold mb-2"
+                          style={{ color: category.color }}
                         >
-                          {/* Skill name and percentage */}
-                          <div className="flex items-center justify-between">
-                            <span className="text-sm font-medium text-heading">
-                              {skill.name}
-                            </span>
-                            <span
-                              className="text-xs font-bold"
-                              style={{ color: category.color }}
-                            >
-                              {skill.level}%
-                            </span>
-                          </div>
+                          {category.title}
+                        </h3>
+                        <p className="text-sm text-textLight">
+                          {category.skills.length} skills
+                        </p>
+                      </div>
 
-                          {/* Progress bar */}
-                          <div className="h-1.5 bg-border rounded-full overflow-hidden">
+                      <motion.div
+                        initial={false}
+                        animate={{
+                          height: isExpanded ? "auto" : 0,
+                          opacity: isExpanded ? 1 : 0,
+                        }}
+                        transition={{ duration: 0.4, ease: "easeInOut" }}
+                        className="overflow-hidden"
+                      >
+                        <div className="px-6 pb-6 pt-2 space-y-3 border-t border-border/50">
+                          {category.skills.map((skill, skillIndex) => (
                             <motion.div
-                              className="h-full rounded-full"
-                              style={{ backgroundColor: category.color }}
-                              initial={{ width: 0 }}
-                              animate={{ width: isExpanded ? `${skill.level}%` : 0 }}
-                              transition={{
-                                duration: 0.8,
-                                delay: isExpanded ? skillIndex * 0.05 + 0.2 : 0,
-                                ease: "easeOut",
+                              key={skill.name}
+                              initial={false}
+                              animate={{
+                                opacity: isExpanded ? 1 : 0,
+                                x: isExpanded ? 0 : -20,
                               }}
-                            />
-                          </div>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </motion.div>
+                              transition={{
+                                duration: 0.3,
+                                delay: isExpanded ? skillIndex * 0.05 : 0,
+                              }}
+                              className="space-y-2"
+                            >
+                              <div className="flex items-center justify-between">
+                                <span className="text-sm font-medium text-heading">
+                                  {skill.name}
+                                </span>
+                                <span
+                                  className="text-xs font-bold"
+                                  style={{ color: category.color }}
+                                >
+                                  {skill.level}%
+                                </span>
+                              </div>
+                              <div className="h-1.5 bg-border rounded-full overflow-hidden">
+                                <motion.div
+                                  className="h-full rounded-full"
+                                  style={{ backgroundColor: category.color }}
+                                  initial={{ width: 0 }}
+                                  animate={{ width: isExpanded ? `${skill.level}%` : 0 }}
+                                  transition={{
+                                    duration: 0.8,
+                                    delay: isExpanded
+                                      ? skillIndex * 0.05 + 0.2
+                                      : 0,
+                                    ease: "easeOut",
+                                  }}
+                                />
+                              </div>
+                            </motion.div>
+                          ))}
+                        </div>
+                      </motion.div>
 
-                  {/* Bottom accent line */}
-                  <motion.div
-                    className="absolute bottom-0 left-0 right-0 h-1 rounded-b-2xl"
-                    style={{ backgroundColor: category.color }}
-                    initial={{ scaleX: 0 }}
-                    whileHover={{ scaleX: 1 }}
-                    transition={{ duration: 0.3 }}
-                  />
-                </motion.div>
-              </motion.div>
-            );
-          })}
+                      <motion.div
+                        className="absolute bottom-0 left-0 right-0 h-1 rounded-b-2xl"
+                        style={{ backgroundColor: category.color }}
+                        initial={{ scaleX: 0 }}
+                        whileHover={{ scaleX: 1 }}
+                        transition={{ duration: 0.3 }}
+                      />
+                    </motion.div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
         </div>
 
         {/* Bottom Text */}
@@ -427,4 +399,3 @@ export default function SkillsWithChart() {
     </section>
   );
 }
-
