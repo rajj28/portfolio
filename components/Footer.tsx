@@ -12,9 +12,9 @@ import emailjs from '@emailjs/browser';
 
 const socialLinks = [
   { iconPath: "/svgs/icons8-github-100.png", href: "https://github.com/rajj28", label: "GitHub", color: "#181717" },
-  { iconPath: "/svgs/icons8-linkedin-100.png", href: "https://linkedin.com/in/ruturaj-sonkamble", label: "LinkedIn", color: "#0A66C2" },
+  { iconPath: "/svgs/icons8-linkedin-100.png", href: "https://www.linkedin.com/in/ruturaj-sonkamble-106246304/", label: "LinkedIn", color: "#0A66C2" },
   { iconPath: "/svgs/icons8-instagram-100.png", href: "https://www.instagram.com/rajjj_._?igsh=MWc5YXdyamt6cGlmaA==", label: "Instagram", color: "#E4405F" },
-  { iconPath: "/svgs/icons8-whatsapp-100.png", href: "https://wa.me/919876543210", label: "WhatsApp", color: "#25D366" },
+  { iconPath: "/svgs/icons8-whatsapp-100.png", href: "https://wa.me/919503046986", label: "WhatsApp", color: "#25D366" },
 ];
 
 const footerLinks = [
