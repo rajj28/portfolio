@@ -83,5 +83,6 @@ export const cacheKeys = {
   achievements: () => 'achievements:all',
   awards: () => 'awards:all',
   achievementStats: () => 'achievement-stats:all',
+  participationCertificates: () => 'participation_certificates:all',
 };
 

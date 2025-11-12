@@ -3,8 +3,8 @@
 import { motion } from "framer-motion";
 import { Award, ExternalLink, Calendar } from "lucide-react";
 import { fadeInUp, staggerContainer, staggerItem } from "@/lib/animations";
-import Image from "next/image";
 import TextFillOnScroll from "./TextFillOnScroll";
+import CertificateSlider from "./CertificateSlider";
 import { useState, useEffect } from "react";
 
 // Database types (from API)
@@ -85,6 +85,7 @@ export default function Certifications() {
       </section>
     );
   }
+
   return (
     <section id="certifications" className="relative py-24 overflow-hidden">
       {/* Background effects */}
@@ -109,11 +110,11 @@ export default function Certifications() {
             <Award size={20} className="text-accent" />
             <span className="text-sm text-textLight font-medium">Professional Credentials</span>
           </motion.div>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                <TextFillOnScroll fillColor="#0EA5E9" duration={1.8}>
-                  Certifications
-                </TextFillOnScroll>
-              </h2>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+            <TextFillOnScroll fillColor="#0EA5E9" duration={1.8}>
+              Certifications
+            </TextFillOnScroll>
+          </h2>
           <p className="text-body text-lg max-w-2xl mx-auto">
             Professional certifications that validate my expertise and commitment to continuous learning.
           </p>
@@ -227,8 +228,43 @@ export default function Certifications() {
             );
           })}
         </motion.div>
+
+        {/* Participation Certificates Section */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeInUp}
+          className="mt-24"
+        >
+          {/* Divider */}
+          <div className="relative mb-12">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-border"></div>
+            </div>
+            <div className="relative flex justify-center">
+              <span className="bg-primary px-4 text-sm text-textLight">
+                Event Participations
+              </span>
+            </div>
+          </div>
+
+          {/* Section Title */}
+          <div className="text-center mb-12">
+            <h3 className="text-3xl md:text-4xl font-bold mb-4">
+              <TextFillOnScroll fillColor="#8B5CF6" duration={1.5}>
+                Participation Certificates
+              </TextFillOnScroll>
+            </h3>
+            <p className="text-body max-w-2xl mx-auto">
+              Recognitions from workshops, hackathons, and tech events I've participated in.
+            </p>
+          </div>
+
+          {/* Certificate Slider */}
+          <CertificateSlider />
+        </motion.div>
       </div>
     </section>
   );
 }
-

@@ -34,6 +34,7 @@ export const CACHE_KEYS = {
   STATS: 'achievement-stats:all',
   SKILLS: 'skills:all',
   TESTIMONIALS: 'testimonials:approved',
+  PARTICIPATION_CERTIFICATES: 'participation_certificates:all',
 } as const;
 
 /**
@@ -188,12 +189,16 @@ export const cacheHelpers = {
   
   // Invalidate achievements cache
   invalidateAchievements: () => CacheManager.invalidate(CACHE_KEYS.ACHIEVEMENTS),
+
+  // Invalidate participation certificates cache
+  invalidateParticipationCertificates: () => CacheManager.invalidate(CACHE_KEYS.PARTICIPATION_CERTIFICATES),
   
   // Invalidate all achievement-related caches
   invalidateAllAchievements: async () => {
     await CacheManager.invalidate(CACHE_KEYS.ACHIEVEMENTS);
     await CacheManager.invalidate(CACHE_KEYS.AWARDS);
     await CacheManager.invalidate(CACHE_KEYS.STATS);
+    await CacheManager.invalidate(CACHE_KEYS.PARTICIPATION_CERTIFICATES);
   },
 };
 

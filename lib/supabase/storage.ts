@@ -8,6 +8,7 @@ export const STORAGE_BUCKETS = {
   ACHIEVEMENTS_VIDEOS: 'achievementsvedios',
   AVATARS: 'avatars',
   THUMBNAILS: 'thumbnails',
+  PARTICIPATION_CERTIFICATES: 'participationcertificate',
 } as const;
 
 /**

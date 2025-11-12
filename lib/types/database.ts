@@ -216,6 +216,28 @@ export interface Database {
         Insert: Omit<Database['public']['Tables']['achievement_stats']['Row'], 'id' | 'created_at' | 'updated_at'>;
         Update: Partial<Database['public']['Tables']['achievement_stats']['Insert']>;
       };
+      participation_certificates: {
+        Row: {
+          id: string;
+          title: string;
+          event: string | null;
+          description: string | null;
+          image_url: string; // public URL of certificate
+          issued_date: string | null;
+          category: string | null;
+          is_featured: boolean;
+          display_order: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: Omit<
+          Database['public']['Tables']['participation_certificates']['Row'],
+          'id' | 'created_at' | 'updated_at'
+        >;
+        Update: Partial<
+          Database['public']['Tables']['participation_certificates']['Insert']
+        >;
+      };
     };
   };
 }
@@ -231,4 +253,6 @@ export type Skill = Database['public']['Tables']['skills']['Row'];
 export type Achievement = Database['public']['Tables']['achievements']['Row'];
 export type Award = Database['public']['Tables']['awards']['Row'];
 export type AchievementStat = Database['public']['Tables']['achievement_stats']['Row'];
+export type ParticipationCertificate =
+  Database['public']['Tables']['participation_certificates']['Row'];
 

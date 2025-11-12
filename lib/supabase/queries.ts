@@ -1,6 +1,7 @@
 import { supabase } from './client';
 import { cache, cacheKeys } from '../upstash/redis';
-import type { Project, Certification, Skill, Testimonial } from '../types/database';
+import type { Project, Certification, Skill, Testimonial, ParticipationCertificate } from '../types/database';
+import { STORAGE_BUCKETS } from './storage';
 
 /**
  * Fetch all published projects with caching
@@ -197,6 +198,61 @@ export async function getTestimonials(options?: {
   await cache.set(cacheKey, data || [], 3600);
 
   return data || [];
+}
+
+export async function getParticipationCertificates(): Promise<string[]> {
+  const cacheKey = cacheKeys.participationCertificates();
+
+  // Try cache first
+  const cached = await cache.get<string[]>(cacheKey);
+  if (cached) return cached;
+
+  try {
+    // Fetch all files from the storage bucket
+    const { data, error } = await supabase
+      .storage
+      .from('participationcertificate')
+      .list('', { 
+        limit: 100,
+        sortBy: { column: 'created_at', order: 'desc' }
+      });
+
+    if (error) {
+      console.error('Failed to fetch certificates from storage:', error);
+      return [];
+    }
+
+    if (!data || data.length === 0) {
+      console.warn('No files found in participation certificates bucket');
+      return [];
+    }
+
+    // Filter out placeholder files only (don't filter by extension)
+    const validFiles = data.filter(file => 
+      file.name && 
+      !file.name.includes('.emptyFolderPlaceholder') &&
+      file.id
+    );
+
+    console.log(`Found ${validFiles.length} certificate files`);
+
+    // Convert to public URLs
+    const urls = validFiles.map(file =>
+      supabase
+        .storage
+        .from('participationcertificate')
+        .getPublicUrl(file.name)
+        .data.publicUrl
+    );
+
+    // Cache for 1 hour
+    await cache.set(cacheKey, urls, 3600);
+
+    return urls;
+  } catch (error) {
+    console.error('Exception fetching certificates:', error);
+    return [];
+  }
 }
 
 /**
